@@ -11,20 +11,20 @@ class Stack:
     def push(self, item:Any) -> None:
         self._stack.append(item)
 
-    def pop(self, non_blocking:bool = False) -> Optional[Any]:
+    def pop(self, silent:bool = False) -> Optional[Any]:
         if not self.is_empty():
             return self._stack.pop()
 
-        if non_blocking:
+        if silent:
             return None
 
         raise IndexError("pop from empty stack")
 
-    def peek(self, non_blocking:bool = False) -> Optional[Any]:
+    def peek(self, silent:bool = False) -> Optional[Any]:
         if not self.is_empty():
             return self._stack[-1]
 
-        if non_blocking:
+        if silent:
             return None
 
         raise IndexError("peek from empty stack")
