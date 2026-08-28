@@ -1,6 +1,4 @@
-from types import MappingProxyType
-
-from data_structures.stack import Stack
+from models import ProblemBase, DFSSolver
 
 
 class Person:
@@ -15,60 +13,39 @@ class Person:
     def __str__(self) -> str:
         return self.name
     
+    def __hash__(self) -> int:
+        return hash(self.name)
+    
+    def __eq__(self, other:Person) -> bool:
+        return self.name == other.name
+    
     # PROPERTIES ----------------------------------------------------------------------------------
 
     @property
     def name(self) -> str:
         return self._name
 
+class FamilyTreeProblem(ProblemBase[Person]):
+    def __init__(self, family_tree:dict[str, list[str]], ancestor:str):
+        self._family_tree:dict[Person, list[Person]] = {Person(parent):[Person(child) for child in children] for parent, children in family_tree.items()}
+        self._ancestor:Person = Person(ancestor)
 
-class FamilyTreeProblem:
-    def __init__(self, family_tree: dict[str, list[str]]):
-        self._family_tree: dict[str, list[Person]] = {
-            parent: [Person(child) for child in children]
-            for parent, children in family_tree.items()
-        }
+    def actions(self, current_state: Person) -> list[Person]:
+        return self._family_tree.get(current_state, [])
+
+    def goal_test(self, current_state: Person) -> bool:
+        return True
+
+    def update_ancestor(self, new_ancestor:str) -> None:
+        self._ancestor = Person(new_ancestor)
     
-    # PROPERTIES ----------------------------------------------------------------------------------
-
     @property
-    def family_tree(self) -> dict[str, list[Person]]:
-        return MappingProxyType(self._family_tree)
+    def initial_state(self) -> Person:
+        return self._ancestor
     
-    # PUBLIC METHODS ------------------------------------------------------------------------------
-
-    def children(self, person: Person) -> list[Person]:
-        return self._family_tree.get(person.name, [])
-
-
-class FamilyTreeSolver:
-    def __init__(self, problem: FamilyTreeProblem):
-        self._problem: FamilyTreeProblem = problem
-    
-    # PROPERTIES ----------------------------------------------------------------------------------
-
     @property
-    def problem(self) -> FamilyTreeProblem:
-        return self._problem
-    
-    # PUBLIC METHODS ------------------------------------------------------------------------------
-
-    def solve(self, ancestor: Person) -> list[Person]:
-        descendants: list[Person] = []
-        stack: Stack = Stack()
-
-        stack.push(ancestor)
-
-        while not stack.is_empty():
-            current_person: Person = stack.pop()
-            children: list[Person] = self.problem.children(current_person)
-
-            for child in children:
-                descendants.append(child)
-                stack.push(child)
-        
-        return descendants
-
+    def family_tree(self) -> dict[Person, list[Person]]:
+        return self._family_tree
 
 if __name__ == "__main__":
     family_tree: dict[str, list[str]] = {
@@ -78,17 +55,14 @@ if __name__ == "__main__":
         "David": ["Frank"],
     }
 
-    problem = FamilyTreeProblem(family_tree)
-    solver = FamilyTreeSolver(problem)
+    problem = FamilyTreeProblem(family_tree, "Adam")
+    solver = DFSSolver(problem, False)
+    solutions = solver.solve()
 
-    ancestor = Person("Alice")
-    descendants = solver.solve(ancestor)
-
-    print("Family Tree:")
-    for parent, children in problem.family_tree.items():
-        children_str = ", ".join(str(child) for child in children)
-        print(f"{parent} -> {children_str}")
-
-    print(f"\nDescendants of {ancestor}:")
-    for person in descendants:
-        print(person)
+    combined_solution = set()
+    for solution in solutions:
+        combined_solution.update(solution)
+    
+    combined_solution.discard(problem.initial_state)
+    
+    print(combined_solution)
