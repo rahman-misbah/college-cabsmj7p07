@@ -50,7 +50,7 @@ class BFSSolver[T]:
 
         for goal in goal_states:
             current_solution:list[T] = list()
-            current_state[T] = goal
+            current_state:T = goal
 
             while current_state is not None:
                 current_solution.append(current_state)
