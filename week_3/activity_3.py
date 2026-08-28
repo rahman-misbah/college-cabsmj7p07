@@ -1,83 +1,63 @@
-# Robot grid problem
-# Robot can move right or bottom
+from models import Cell, Maze, ProblemBase, MazeSolver
 
-from types import MappingProxyType
-
-class Cell:
-    def __init__ (self, x:int, y:int):
-        self._x = x
-        self._y = y
-
-    # DUNDER METHODS ------------------------------------------------------------------------------
-
-    def __repr__(self) -> str:
-        return f"Cell({self.x, self.y})"
+class MazeProblem(ProblemBase):
+    def __init__(self, maze:Maze):
+        self._maze:Maze = maze
     
-    def __str__(self) -> str:
-        return f"({self.x}, {self.y})"
-
     # PROPERTIES ----------------------------------------------------------------------------------
 
     @property
-    def x(self) -> int:
-        return self._x
+    def maze(self) -> Maze:
+        return self._maze
     
     @property
-    def y(self) -> int:
-        return self._y
-
-class Maze:
-    def __init__(self, maze:list[list[str]], start_cell:tuple[int, int], goal_cell:tuple[int, int]):
-        """Expects cells in (x, y) format"""
-        self._maze = maze
-        self._start_cell = Cell(*start_cell)
-        self._goal_cell = Cell(*goal_cell)
-
-        self._width = len(self._maze[0])
-        self._height = len(self._maze)
+    def initial_state(self) -> Cell:
+        return self.maze.start_cell
     
-    # DUNDER METHODS ------------------------------------------------------------------------------
-
-    def __getitem__(self, key):
-        if isinstance(key, Cell):
-            return self.query(Cell.x, Cell.y)
-        return self.query(*key)
-        
-    # PROPERTIES ----------------------------------------------------------------------------------
-
-    @property
-    def maze(self) -> MappingProxyType:
-        return MappingProxyType(self._maze)
+    # PRIVATE METHODS -----------------------------------------------------------------------------
+    # ACTIONS
     
-    @property
-    def start_cell(self) -> Cell:
-        return self._start_cell
+    def _right(self, current_cell:Cell) -> Cell:
+        return Cell(current_cell.x + 1, current_cell.y)
     
-    @property
-    def goal_cell(self) -> Cell:
-        return self._goal_cell
+    def _down(self, current_cell:Cell) -> Cell:
+        return Cell(current_cell.x, current_cell.y + 1)
     
-    @property
-    def width(self) -> int:
-        return self._width
-    
-    @property
-    def height(self) -> int:
-        return self._height
-
     # PUBLIC METHODS ------------------------------------------------------------------------------
+    
+    def actions(self, current_cell:Cell) -> list[Cell]:
+        all_moves:list = [self._right, self._down]
+        
+        possible_moves:list[Cell] = list()
 
-    def query(self, coordinate:tuple[int, int]):
-        """Expects coordinates in (x, y) format"""
-        x:int
-        y:int
-        x, y = coordinate
+        for move in all_moves:
+            new_cell = move(current_cell)
 
-        if not 0 <= x < self.width:
-            raise IndexError("x out of bounds")
+            if 0 <= new_cell.x < self.maze.width and 0 <= new_cell.y < self.maze.height:
+                if self.maze[new_cell] == '0':
+                    possible_moves.append(new_cell)
         
-        if not 0 <= y < self.height:
-            raise IndexError("y out of bounds")
-        
-        return self._maze[y][x]
-        
+        return possible_moves
+    
+    def goal_test(self, current_cell:Cell) -> bool:
+        return current_cell == self.maze.goal_cell
+
+if __name__ == "__main__":
+    maze = [
+        ['0', '0', '1', '0'],
+        ['0', '0', '0', '0'],
+        ['1', '0', '0', '1'],
+        ['0', '0', '0', '0']
+    ]
+
+    initial_state = (0, 0)
+    goal_state = (3, 3)
+
+    maze_2d = Maze(maze, initial_state, goal_state)
+    maze_problem = MazeProblem(maze_2d)
+
+    solver = MazeSolver(maze_problem)
+    solutions = solver.solve()
+
+    print(maze_2d)
+    print(solutions[0])
