@@ -8,6 +8,15 @@ class Cell:
     def __str__(self) -> str:
         return f"({self.x}, {self.y})"
     
+    def __repr__(self) -> str:
+        return f"Cell({self.x}, {self.y})"
+    
+    def __eq__(self, other:Cell) -> bool:
+        return self.x == other.x and self.y == other.y
+    
+    def __hash__(self) -> int:
+        return hash(f"({self.x}, {self.y})")
+    
     # PROPERTIES ----------------------------------------------------------------------------------
 
     @property

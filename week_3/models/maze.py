@@ -1,5 +1,5 @@
 from types import MappingProxyType
-from cell import Cell
+from .cell import Cell
 
 class Maze:
     def __init__(self, maze:list[list[str]], start_cell: tuple[int, int], goal_cell: tuple[int, int]):
@@ -7,8 +7,8 @@ class Maze:
         self._start_cell = Cell(*start_cell)
         self._goal_cell = Cell(*goal_cell)
 
-        self._height = len(self.maze)      # Number of rows
-        self._width = len(self.maze[0])    # Number of columns
+        self._height = len(self._maze)      # Number of rows
+        self._width = len(self._maze[0])    # Number of columns
     
     # DUNDER METHODS ------------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ class Maze:
     def __str__(self) -> str:
         result = []
 
-        for row in self.maze:
+        for row in self._maze:
             result.append(str(row))
         
         result.append(f"Start Cell: {self.start_cell}")
@@ -59,4 +59,4 @@ class Maze:
         if not 0 <= y < self.height:
             raise IndexError("y out of bounds")
         
-        return self.maze[y][x]
+        return self._maze[y][x]
