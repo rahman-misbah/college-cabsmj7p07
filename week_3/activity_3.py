@@ -1,6 +1,6 @@
 from models import Cell, Maze, ProblemBase, BFSSolver
 
-class MazeProblem(ProblemBase):
+class RobotProblem(ProblemBase[Cell]):
     def __init__(self, maze:Maze):
         self._maze:Maze = maze
     
@@ -54,9 +54,9 @@ if __name__ == "__main__":
     goal_state = (3, 3)
 
     maze_2d = Maze(maze, initial_state, goal_state)
-    maze_problem = MazeProblem(maze_2d)
+    robot_problem = RobotProblem(maze_2d)
 
-    solver = BFSSolver(maze_problem)
+    solver = BFSSolver(robot_problem)
     solutions = solver.solve()
 
     print(maze_2d)
