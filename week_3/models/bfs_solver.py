@@ -4,15 +4,15 @@ from . import ProblemBase
 from data_structures import Queue
 
 class BFSSolver[T]:
-    def __init__(self, maze_problem:ProblemBase, early_exit:bool = True):
-        self._maze_problem : ProblemBase = maze_problem
+    def __init__(self, problem:ProblemBase[T], early_exit:bool = True):
+        self._problem : ProblemBase[T] = problem
         self._early_exit : bool = early_exit
     
     # PROPERTIES ----------------------------------------------------------------------------------
 
     @property
     def maze_problem(self) -> ProblemBase:
-        return self._maze_problem
+        return self._problem
     
     @property
     def early_exit(self) -> bool:
