@@ -1,7 +1,7 @@
 from . import ProblemBase
 from data_structures import Queue
 
-class MazeSolver:
+class BFSSolver:
     def __init__(self, maze_problem:ProblemBase, early_exit:bool = True):
         self._maze_problem = maze_problem
         self._early_exit = early_exit

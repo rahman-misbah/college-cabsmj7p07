@@ -1,18 +1,19 @@
 from abc import ABC, abstractmethod
-from models import Cell
+
+from typing import Any
 
 
-class ProblemBase(ABC):
+class ProblemBase[T](ABC):
 
     @abstractmethod
-    def actions(self, current_cell: Cell) -> list[Cell]:
+    def actions(self, current_state: T) -> list[T]:
         pass
 
     @abstractmethod
-    def goal_test(self, current_cell: Cell) -> bool:
+    def goal_test(self, current_state: T) -> bool:
         pass
 
     @property
     @abstractmethod
-    def initial_state(self) -> Cell:
+    def initial_state(self) -> T:
         pass
