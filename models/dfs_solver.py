@@ -1,9 +1,14 @@
 from typing import Optional
 
-from .solver_base import SolverBase
+from .solver_base import TraverseSolverBase, GoalSolverBase
+from .problem_base import TraverseProblemBase, GoalProblemBase
 from data_structures import Stack
 
-class DFSSolver[T](SolverBase[T]):
+class DFSSolver[T]:
+    def solve(problem: TraverseProblemBase[T] | GoalProblemBase[T]):
+        pass
+
+class DFSGoalSolver[T](TraverseSolverBase[T]):
     def _solve(self) -> tuple[dict[T, Optional[T]], set[T]]:
         parent_dict:dict[T, Optional[T]] = dict()
         goal_states:set[T] = set()

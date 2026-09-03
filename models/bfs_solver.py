@@ -1,9 +1,9 @@
 from typing import Optional
 
-from .solver_base import SolverBase
+from .solver_base import TraverseSolverBase
 from data_structures import Queue
 
-class BFSSolver[T](SolverBase[T]):
+class BFSSolver[T](TraverseSolverBase[T]):
     def _solve(self) -> tuple[dict[T, Optional[T]], set[T]]:
         parent_dict:dict[T, Optional[T]] = dict()
         goal_states:set[T] = set()

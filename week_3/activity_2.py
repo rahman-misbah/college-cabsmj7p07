@@ -1,4 +1,4 @@
-from models import ProblemBase, DFSSolver
+from models import TraverseProblemBase, DFSGoalSolver
 
 
 class Person:
@@ -25,7 +25,7 @@ class Person:
     def name(self) -> str:
         return self._name
 
-class FamilyTreeProblem(ProblemBase[Person]):
+class FamilyTreeProblem(TraverseProblemBase[Person]):
     def __init__(self, family_tree:dict[str, list[str]], ancestor:str):
         self._family_tree:dict[Person, list[Person]] = {Person(parent):[Person(child) for child in children] for parent, children in family_tree.items()}
         self._ancestor:Person = Person(ancestor)
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     }
 
     problem = FamilyTreeProblem(family_tree, "Adam")
-    solver = DFSSolver(problem, False)
+    solver = DFSGoalSolver(problem, False)
     solutions = solver.solve()
 
     combined_solution = set()

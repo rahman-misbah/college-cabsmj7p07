@@ -1,6 +1,6 @@
-from models import Cell, Maze, ProblemBase, BFSSolver
+from models import Cell, Maze, TraverseProblemBase, BFSSolver
 
-class MazeProblem(ProblemBase):
+class MazeProblem(TraverseProblemBase[Cell]):
     def __init__(self, maze:Maze):
         self._maze:Maze = maze
     

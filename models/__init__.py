@@ -1,13 +1,13 @@
 from .cell import Cell
 from .maze import Maze
-from .problem_base import ProblemBase
+from .problem_base import TraverseProblemBase
 from .bfs_solver import BFSSolver
-from .dfs_solver import DFSSolver
+from .dfs_solver import DFSGoalSolver
 
 __all__ = [
     Cell,
     Maze,
-    ProblemBase,
+    TraverseProblemBase,
     BFSSolver,
-    DFSSolver
+    DFSGoalSolver
 ]
