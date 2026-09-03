@@ -35,7 +35,7 @@ class WebpageState(StateBase):
     def remaining_site(self) -> Site:
         return self._remaining_site
 
-class WebpageHierarchyProblem(GoalProblemBase[str]):
+class WebpageHierarchyProblem(GoalProblemBase[WebpageState]):
     def __init__(self, site_map: Site, target_page: str | None = None):
         self._site_map = copy.deepcopy(site_map)
 
