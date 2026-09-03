@@ -35,6 +35,10 @@ class GoalSolverBase[T](TraverseSolverBase[T]):
     def early_exit(self) -> bool:
         return self._early_exit
 
+    @property
+    def problem(self) -> GoalProblemBase[T]:
+        return super().problem
+
     # PRIVATE METHODS -----------------------------------------------------------------------------
 
     @abstractmethod
