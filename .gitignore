@@ -1,0 +1,96 @@
+# ==========================================
+# Others
+# ==========================================
+scratchpad.py
+
+# ==========================================
+# Byte-compiled / optimized / DLL files
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ==========================================
+# Virtual Environments (DO NOT COMMIT)
+# ==========================================
+.venv/
+venv/
+ENV/
+env/
+target/
+.env/
+.venv*/
+
+# ==========================================
+# Environment Variables & Secrets
+# ==========================================
+.env
+.flaskenv
+*.env
+*.secret
+
+# ==========================================
+# Distribution / Packaging
+# ==========================================
+bin/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ==========================================
+# Pytest, Testing, and Coverage
+# ==========================================
+htmlcov/
+.toast/
+.htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# ==========================================
+# Jupyter Notebooks
+# ==========================================
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# ==========================================
+# Documentation
+# ==========================================
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ==========================================
+# IDEs and Text Editors
+# ==========================================
+# VS Code
+.vscode/
+
+# PyCharm / JetBrains
+.idea/
+
+# Local history / Operating System files
+.DS_Store
+Thumbs.db
+*.bak
+*.swp
