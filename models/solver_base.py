@@ -1,7 +1,7 @@
 from typing import Optional
 from abc import ABC, abstractmethod
 
-from problem_base import TraverseProblemBase, GoalProblemBase
+from models.problem_base import TraverseProblemBase, GoalProblemBase
 
 class TraverseSolverBase[T](ABC):
     def __init__(self, problem:TraverseProblemBase[T]):

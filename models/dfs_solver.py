@@ -8,6 +8,9 @@ class DFSSolver[T]:
     def solve(problem: TraverseProblemBase[T] | GoalProblemBase[T]):
         pass
 
+class DFSTraverseSolver[T](GoalSolverBase[T]):
+    pass
+
 class DFSGoalSolver[T](TraverseSolverBase[T]):
     def _solve(self) -> tuple[dict[T, Optional[T]], set[T]]:
         parent_dict:dict[T, Optional[T]] = dict()
