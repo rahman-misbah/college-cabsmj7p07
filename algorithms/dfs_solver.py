@@ -3,15 +3,19 @@
 Expects the problem to be an implementation fo TraversalProblemBase or GoalProblemBase
 """
 
-from base_models import StateBase, TraversalProblemBase, TraversalSolverBase, GoalProblemBase, GoalSolverBase
-from ..data_structures import Stack
+from models.base_models import StateBase, TraversalProblemBase, TraversalSolverBase, GoalProblemBase, GoalSolverBase
+from data_structures import Stack
 
 class DFSSolver[T: StateBase]:
-    def solve(problem: TraversalProblemBase | GoalProblemBase, early_exit: bool = True):
+    def solve(
+            problem: TraversalProblemBase | GoalProblemBase,
+            early_exit: bool = True
+            ) -> list[list[T]] | list[T]:
         """Calls the appropriate DFS Solver according to problem type
-        
-        Note:
-            early_exit(bool) is only relevant if problem is a GoalProblem type
+
+        Args:
+            problem(TraversalProblemBase | GoalProblemBase): The problem to be solved. Must be an implementation of the appropriate base class.
+            early_exit(bool): Whether to exit once a single goal has been found (only relevant to GoalProblemBase type problems)
         """
         if isinstance(problem, GoalProblemBase):
             return _DFSGoalSolver.solve(problem, early_exit)

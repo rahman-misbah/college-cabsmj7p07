@@ -1,76 +1,80 @@
-from models_bkp import Cell, Maze, TraverseProblemBase, BFSSolver
+from models import Grid, Cell
+from models.cell import up, right, down, left
+from models.base_models import GoalProblemBase
+from algorithms import BFSSolver
+from utils import display_path
 
-class MazeProblem(TraverseProblemBase[Cell]):
-    def __init__(self, maze:Maze):
-        self._maze:Maze = maze
-    
+class MazeProblem(GoalProblemBase[Cell]):
+    def __init__(self, grid: list[list[int]], start_cell: tuple[int, int], goal_cell: tuple[int, int]):
+        self._grid = Grid(grid)
+        self._start_cell = Cell(*start_cell)
+        self._goal_cell = Cell(*goal_cell)
+
+    # DUNDER METHODS ------------------------------------------------------------------------------
+
+    def __str__(self) -> str:
+        result = list()
+
+        result.append(str(self.grid))
+        result.append(f"Start Cell: {self.start_cell}")
+        result.append(f"Goal Cell: {self.goal_cell}")
+
+        return '\n'.join(result)
+
     # PROPERTIES ----------------------------------------------------------------------------------
 
     @property
-    def maze(self) -> Maze:
-        return self._maze
-    
+    def grid(self) -> Grid:
+        return self._grid
+
     @property
-    def initial_state(self) -> Cell:
-        return self.maze.start_cell
-    
-    # PRIVATE METHODS -----------------------------------------------------------------------------
-    # ACTIONS
+    def start_cell(self) -> Cell:
+        return self._start_cell
 
-    def _up(self, current_cell:Cell) -> Cell:
-        return Cell(current_cell.x, current_cell.y - 1)
-    
-    def _right(self, current_cell:Cell) -> Cell:
-        return Cell(current_cell.x + 1, current_cell.y)
-    
-    def _down(self, current_cell:Cell) -> Cell:
-        return Cell(current_cell.x, current_cell.y + 1)
-    
-    def _left(self, current_cell:Cell) -> Cell:
-        return Cell(current_cell.x - 1, current_cell.y)
-    
+    @property
+    def goal_cell(self) -> Cell:
+        return self._goal_cell
+
+    @property
+    def initial_state(self):
+        return self.start_cell
+
     # PUBLIC METHODS ------------------------------------------------------------------------------
-    
-    def actions(self, current_cell:Cell) -> list[Cell]:
-        all_moves:list = [self._up,
-                     self._right,
-                     self._down,
-                     self._left
-                     ]
-        
-        possible_moves:list[Cell] = list()
 
-        for move in all_moves:
-            new_cell = move(current_cell)
+    def actions(self, current_cell: Cell) -> list[Cell]:
+        all_actions = [up, right, down, left]
+        valid_actions = list()
 
-            if 0 <= new_cell.x < self.maze.width and 0 <= new_cell.y < self.maze.height:
-                if self.maze[new_cell] == '0':
-                    possible_moves.append(new_cell)
-        
-        return possible_moves
-    
-    def goal_test(self, current_cell:Cell) -> bool:
-        return current_cell == self.maze.goal_cell
+        for action in all_actions:
+            next_cell = action(current_cell)
+
+            if not 0 <= next_cell.x < self.grid.width: continue
+            if not 0 <= next_cell.y < self.grid.height: continue
+            if self.grid[next_cell] == 0:
+                valid_actions.append(next_cell)
+
+        return valid_actions
+
+    def goal_test(self, current_cell: Cell) -> bool:
+        return current_cell == self.goal_cell
 
 if __name__ == "__main__":
-    maze = [
-        ['0', '0', '0', '1', '0', '0', '0'],
-        ['1', '1', '0', '1', '0', '1', '0'],
-        ['0', '0', '0', '0', '0', '1', '0'],
-        ['0', '1', '1', '1', '0', '1', '0'],
-        ['0', '0', '0', '1', '0', '0', '0'],
-        ['0', '1', '0', '0', '0', '1', '1'],
-        ['0', '0', '0', '1', '0', '0', '0']
-    ]
+    raw_grid = [
+            [0, 0, 0, 1, 0, 0, 0],
+            [1, 1, 0, 1, 0, 1, 0],
+            [0, 0, 0, 0, 0, 1, 0],
+            [0, 1, 1, 1, 0, 1, 0],
+            [0, 0, 0, 1, 0, 0, 0],
+            [0, 1, 0, 0, 0, 1, 1],
+            [0, 0, 0, 1, 0, 0, 0]
+        ]
 
-    initial_state = (0, 0)
-    goal_state = (6, 6)
+    start_cell = (0, 0)
+    goal_cell = (6, 6)
 
-    maze_2d = Maze(maze, initial_state, goal_state)
-    maze_problem = MazeProblem(maze_2d)
+    problem = MazeProblem(raw_grid, start_cell, goal_cell)
+    print(problem)
 
-    solver = BFSSolver(maze_problem)
-    solutions = solver.solve()
+    result = BFSSolver.solve(problem)
 
-    print(maze_2d)
-    print(solutions[0])
+    display_path(result[0])

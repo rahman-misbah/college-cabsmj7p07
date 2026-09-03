@@ -11,15 +11,15 @@ class TraversalProblemBase[T: StateBase](ABC):
 
     # PUBLIC METHODS ------------------------------------------------------------------------------
 
-    @abstractmethod
     @property
+    @abstractmethod
     def initial_state(self) -> T:
         pass
 
     # PUBLIC METHODS ------------------------------------------------------------------------------
 
     @abstractmethod
-    def actions(self) -> list[T]:
+    def actions(self, current_state: T) -> list[T]:
         """Return a list of all valid next states"""
         pass
 

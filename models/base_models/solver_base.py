@@ -44,7 +44,7 @@ class GoalSolverBase[T: StateBase](ABC):
         pass
 
     @staticmethod
-    def _construct_solutions(parent_dict: dict[T, T | None], goal_states: set[T]):
+    def _construct_solutions(parent_dict: dict[T, T | None], goal_states: set[T]) -> list[list[T]]:
         solution_list:list[list[T]] = list()
         
         for goal in goal_states:
