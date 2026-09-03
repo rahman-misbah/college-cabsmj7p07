@@ -1,4 +1,4 @@
-from models import Cell, Maze, GoalProblemBase, GoalSolverBase
+from models_bkp import Cell, Maze, GoalProblemBase, GoalSolverBase
 from data_structures.priority_queue import PriorityQueue
 
 def manhattan_distance(current_cell: Cell, goal_cell: Cell) -> int:

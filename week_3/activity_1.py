@@ -1,4 +1,4 @@
-from models import Cell, Maze, TraverseProblemBase, BFSSolver
+from models_bkp import Cell, Maze, TraverseProblemBase, BFSSolver
 
 class MazeProblem(TraverseProblemBase[Cell]):
     def __init__(self, maze:Maze):
