@@ -7,7 +7,7 @@ from . import StateBase, TraversalProblemBase, GoalProblemBase
 
 from abc import ABC, abstractmethod
 
-class TraversalSolverBase[T](ABC):
+class TraversalSolverBase[T: StateBase](ABC):
 
     # PUBLIC METHODS ------------------------------------------------------------------------------
 
@@ -23,16 +23,16 @@ class TraversalSolverBase[T](ABC):
         """Implementation of the solution process"""
         pass
 
-class GoalSolverBase[T](ABC):
+class GoalSolverBase[T: StateBase](ABC):
 
     # PUBLIC METHODS ------------------------------------------------------------------------------
 
     @classmethod
-    def solve(cls, problem: GoalProblemBase[T]) -> list[list[T]]:
+    def solve(cls, problem: GoalProblemBase[T], early_exit: bool = True) -> list[list[T]]:
         parent_dict: dict[T, None | T]
         goal_states: set[T]
 
-        parent_dict, goal_states = cls._solve(problem)
+        parent_dict, goal_states = cls._solve(problem, early_exit)
         solutions = cls._construct_solutions(parent_dict, goal_states)
 
         return solutions
@@ -40,11 +40,11 @@ class GoalSolverBase[T](ABC):
     # PRIVATE METHODS -----------------------------------------------------------------------------
 
     @abstractmethod
-    def _solve(problem: GoalProblemBase[T]) -> tuple[dict[T, None | T], set[T]]:
+    def _solve(problem: GoalProblemBase[T], early_exit: bool = True) -> tuple[dict[T, None | T], set[T]]:
         pass
 
     @staticmethod
-    def _construct_solutions(parent_dict: dict[T, None | T], goal_states: set[T]):
+    def _construct_solutions(parent_dict: dict[T, T | None], goal_states: set[T]):
         solution_list:list[list[T]] = list()
         
         for goal in goal_states:
