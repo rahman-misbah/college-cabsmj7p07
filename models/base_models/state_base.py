@@ -10,5 +10,6 @@ class StateBase(ABC):
     def __eq__(self):
         pass
 
+    @abstractmethod
     def __hash__(self):
         pass
