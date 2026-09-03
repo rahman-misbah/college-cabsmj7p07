@@ -1,5 +1,5 @@
-from ..models import Cell, Maze, GoalProblemBase, GoalSolverBase
-from ..data_structures.priority_queue import PriorityQueue
+from models import Cell, Maze, GoalProblemBase, GoalSolverBase
+from data_structures.priority_queue import PriorityQueue
 
 def manhattan_distance(current_cell: Cell, goal_cell: Cell) -> int:
     return abs(current_cell.x - goal_cell.x) + abs(current_cell.y - goal_cell.y)
@@ -8,6 +8,12 @@ class AStarNode:
     def __init__(self, cell: Cell, path_cost: int = 0):
         self._cell = cell
         self._path_cost = path_cost
+
+    def __hash__(self):
+        return hash(f"{self.cell.x}, {self.cell.y}, {self.path_cost}")
+
+    def __eq__(self, other):
+        return self.cell == other.cell
 
     @property
     def cell(self):
@@ -126,6 +132,5 @@ if __name__ == "__main__":
 
     solutions = a_star_solver.solve()
 
-    print(solutions[0])
-
-    
+    for node in solutions[0]:
+        print(node.cell)
