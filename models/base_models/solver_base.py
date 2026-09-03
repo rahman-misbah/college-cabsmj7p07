@@ -13,7 +13,7 @@ class TraversalSolverBase[T](ABC):
 
     @classmethod
     def solve(cls, problem: TraversalProblemBase[T]) -> list[T]:
-        """Returns the list of all visited states in a traversal"""
+        """Returns the list of all visited nodes in a traversal"""
         return cls._solve(problem)
 
     # PRIVATE METHODS -----------------------------------------------------------------------------
